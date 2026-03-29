@@ -3350,3 +3350,4 @@
   WebView.postEvent('web_app_request_content_safe_area');
 
 })();
+export {};

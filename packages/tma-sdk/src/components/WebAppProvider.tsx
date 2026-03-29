@@ -10,6 +10,8 @@ const WebAppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const init = async () => {
+      // 必须在客户端动态加载，避免 SSR 时 window is not defined
+      await import('../lib/telegram-web-app');
       // dev 环境自动注入 Mock（若真实 TG WebApp 不存在）
       if (process.env.NODE_ENV === 'development') {
         const { injectMockIfNeeded } = await import('../mock');
