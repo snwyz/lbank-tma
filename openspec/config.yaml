@@ -1,0 +1,34 @@
+schema: spec-driven
+
+context: |
+  Project: LBank 法币出入金 Telegram Mini App (lbk-fiat-tg)
+  Domain: 法币（Fiat）充提币流程，面向 Telegram Mini App 用户，对接 LBank 内部法币网关
+
+  Tech stack:
+    - Next.js 16.2.1 (App Router, Server Components, Server Actions)
+    - React 19.2.4
+    - TypeScript ^5 (strict mode)
+    - Tailwind CSS v4 (via @tailwindcss/postcss)
+    - pnpm 10.23.0
+    - shadcn/ui (latest) — 基于 Radix UI + Tailwind CSS 的组件库，组件代码直接复制到项目中
+
+  Conventions:
+    - 使用 conventional commits (feat/fix/chore/docs)
+    - 文件夹按功能模块组织，放在 app/ 或 src/ 下
+    - 组件使用 TypeScript + 函数式组件，禁止 class component
+    - 服务端逻辑优先使用 Server Components / Server Actions，减少客户端 bundle
+    - 样式只用 Tailwind CSS，禁止内联 style
+    - 所有对外暴露的函数和类型必须有 TypeScript 类型标注
+    - 所有 change 使用中文描述业务需求，技术方案和实现细节，禁止使用英文
+
+rules:
+  proposal:
+    - 用中文描述业务背景和目标
+    - 必须包含 Non-goals 章节，明确不做什么
+    - 控制在 400 字以内
+  design:
+    - 必须包含数据流图或组件结构图（ASCII）
+    - 明确标注哪些逻辑在 Server 端、哪些在 Client 端
+  tasks:
+    - 每个任务粒度控制在 1-2 小时内
+    - 任务描述用动词开头（如：创建、实现、接入、修复）
