@@ -36,6 +36,9 @@ const exampleMap: Record<string, React.ComponentType> = {
   ),
   'use-viewport': dynamic(() => import('../_examples/UseViewportExample')),
   'use-init-data': dynamic(() => import('../_examples/UseInitDataExample')),
+  'use-switch-inline-query': dynamic(
+    () => import('../_examples/UseSwitchInlineQueryExample'),
+  ),
 };
 
 export default async function SlugPage({ params }: Props) {

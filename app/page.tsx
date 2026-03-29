@@ -6,6 +6,7 @@ import {
   useOpenLink,
   buildReferralLink,
 } from '@lbank/tma-sdk';
+import { useState } from 'react';
 import type { StartAppPayload } from '@lbank/tma-sdk';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -44,10 +45,34 @@ export default function Page() {
   console.log('referralLink:', referralLink);
 
   const isInvited = Boolean(payload?.ref);
+  const [copied, setCopied] = useState(false);
 
   function handleShare() {
     if (!referralLink) return;
-    openTelegramLink(referralLink);
+    const encodedUrl = encodeURIComponent(referralLink);
+    const encodedText = encodeURIComponent(
+      '邀请我加入 LBank，和我一起赚积分！',
+    );
+    openTelegramLink(
+      `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
+    );
+  }
+
+  async function handleCopy() {
+    if (!referralLink) return;
+    try {
+      await navigator.clipboard.writeText(referralLink);
+    } catch {
+      // fallback for environments that don't support clipboard API
+      const el = document.createElement('textarea');
+      el.value = referralLink;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   return (
@@ -125,6 +150,9 @@ export default function Page() {
             </p>
             <Button className='w-full' onClick={handleShare}>
               邀请朋友获积分
+            </Button>
+            <Button variant='outline' className='w-full' onClick={handleCopy}>
+              {copied ? '已复制 ✓' : '复制链接'}
             </Button>
           </CardContent>
         </Card>

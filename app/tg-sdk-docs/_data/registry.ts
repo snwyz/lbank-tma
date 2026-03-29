@@ -325,6 +325,27 @@ function FullscreenToggle() {
     hasExample: false,
   },
   {
+    slug: 'use-switch-inline-query',
+    name: 'useSwitchInlineQuery',
+    category: 'Hook',
+    description:
+      '切换到 Telegram Inline 模式并预填充查询词，常用于分享邀请卡片给联系人或群组。需要 Bot 开启 Inline Mode。',
+    usage: `import { useSwitchInlineQuery } from '@lbank/tma-sdk';
+
+function InviteButton() {
+  const switchInlineQuery = useSwitchInlineQuery();
+
+  return (
+    <button onClick={() => switchInlineQuery('join ref_123', ['users', 'groups'])}>
+      邀请好友
+    </button>
+  );
+}`,
+    apiSummary:
+      '返回: (query: string, chooseChatTypes?: Array<"users" | "bots" | "groups" | "channels">) => void',
+    hasExample: true,
+  },
+  {
     slug: 'use-wa-info',
     name: 'useWaInfo',
     category: 'Hook',
