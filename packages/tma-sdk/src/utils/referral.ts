@@ -51,10 +51,10 @@ export function decodeStartParam<T = StartAppPayload>(raw: string): T | null {
 
 /**
  * 生成携带 referrer 参数的 Telegram Mini App 推广链接。
- * 格式：https://t.me/<botName>/<appName>?startapp=<encoded>
+ * 格式：https://t.me/<appName>/?startapp=<encoded>
  */
 export function buildReferralLink(options: ReferralLinkOptions): string {
-  const { botName, appName, ref, ch } = options;
+  const { appName, ref, ch } = options;
   const encoded = encodeStartParam({ ref, ch });
-  return `https://t.me/${botName}/${appName}?startapp=${encoded}`;
+  return `https://t.me/${appName}/lbank?startapp=${encoded}`;
 }
