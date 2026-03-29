@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 
 // Bot / App 标识符，实际值通过环境变量注入
 const BOT_NAME = process.env.NEXT_PUBLIC_TG_BOT_NAME ?? 'lbkTgBot';
-const APP_NAME = process.env.NEXT_PUBLIC_TG_APP_NAME ?? 'lbkTgBot';
+const APP_NAME = process.env.NEXT_PUBLIC_TG_APP_NAME ?? 'lbank';
 
 // Mock 邀请统计（无后端，前端 MVP 固定数据）
 const MOCK_STATS = { inviteCount: 3, totalPoints: 30 };
