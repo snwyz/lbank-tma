@@ -29,3 +29,4 @@ export type {
   PopupParams,
   ScanQrPopupParams,
 } from './webapp.types';
+export type { StartAppPayload, ReferralLinkOptions } from './referral.types';

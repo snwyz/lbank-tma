@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import type { WebApp } from '../types';
 import { webAppContext } from '../context';
+import { getWebApp } from '../core/init';
 
 const WebAppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [twa, setTwa] = useState<WebApp | null>(null);
@@ -14,7 +15,6 @@ const WebAppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         const { injectMockIfNeeded } = await import('../mock');
         injectMockIfNeeded();
       }
-      const { getWebApp } = await import('../core/init');
       setTwa(getWebApp());
     };
     init();

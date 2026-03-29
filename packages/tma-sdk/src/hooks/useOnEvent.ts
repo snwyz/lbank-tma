@@ -1,3 +1,4 @@
+'use client';
 import type { WebApp, EventType, EventCallback } from '../types';
 import { useEffect } from 'react';
 import { useWebApp } from './useWebApp';

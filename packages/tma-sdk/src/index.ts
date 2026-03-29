@@ -39,6 +39,14 @@ export { default as useThemeParams } from './hooks/useThemeParams';
 export { default as useViewport } from './hooks/useViewport';
 export { default as useWaInfo } from './hooks/useWaInfo';
 export { default as useWebApp } from './hooks/useWebApp';
+export { default as useStartParam } from './hooks/useStartParam';
+
+// Utils
+export {
+  encodeStartParam,
+  decodeStartParam,
+  buildReferralLink,
+} from './utils/referral';
 
 // Types
 export type * from './types';

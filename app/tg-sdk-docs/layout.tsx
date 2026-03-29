@@ -13,7 +13,7 @@ export default function TgDocsLayout({
           首页
         </Link>
         <span>/</span>
-        <Link href='/tg-docs' className='hover:text-foreground'>
+        <Link href='/tg-sdk-docs' className='hover:text-foreground'>
           TG Docs
         </Link>
       </div>

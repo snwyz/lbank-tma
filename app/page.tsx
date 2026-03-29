@@ -1,65 +1,156 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import {
+  useInitData,
+  useStartParam,
+  useOpenLink,
+  buildReferralLink,
+} from '@lbank/tma-sdk';
+import type { StartAppPayload } from '@lbank/tma-sdk';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
+
+// Bot / App 标识符，实际值通过环境变量注入
+const BOT_NAME = process.env.NEXT_PUBLIC_TG_BOT_NAME ?? 'lbkTgBot';
+const APP_NAME = process.env.NEXT_PUBLIC_TG_APP_NAME ?? 'lbkTgBot';
+
+// Mock 邀请统计（无后端，前端 MVP 固定数据）
+const MOCK_STATS = { inviteCount: 3, totalPoints: 30 };
+
+export default function Page() {
+  const { initData, initDataUnsafe } = useInitData();
+  const payload = useStartParam<StartAppPayload>();
+  const { openTelegramLink } = useOpenLink();
+  const router = useRouter();
+  const user = initDataUnsafe?.user;
+  const currentUserId = String(user?.id ?? '');
+  const displayName =
+    [user?.first_name, user?.last_name].filter(Boolean).join(' ') ||
+    user?.username ||
+    '未知用户';
+
+  const referralLink = currentUserId
+    ? buildReferralLink({
+        botName: BOT_NAME,
+        appName: APP_NAME,
+        ref: currentUserId,
+      })
+    : null;
+
+  const isInvited = Boolean(payload?.ref);
+
+  function handleShare() {
+    if (!referralLink) return;
+    openTelegramLink(referralLink);
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className='min-h-screen p-4 flex flex-col gap-4 bg-background'>
+      {/* 顶部：用户信息 */}
+      <Card>
+        <CardHeader className='pb-2'>
+          <div className='flex items-center justify-between'>
+            <CardTitle className='text-base'>
+              我的账户 {!initData && '（Mock 数据）'}
+            </CardTitle>
+            {isInvited && <Badge variant='secondary'>受邀用户</Badge>}
+          </div>
+        </CardHeader>
+        <CardContent className='flex flex-col gap-1 text-sm'>
+          <div className='flex justify-between'>
+            <span className='text-muted-foreground'>用户名</span>
+            <span className='font-medium'>{displayName}</span>
+          </div>
+          <div className='flex justify-between'>
+            <span className='text-muted-foreground'>Telegram ID</span>
+            <span className='font-mono text-xs'>{currentUserId || '—'}</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 归因信息：被邀请人模式 */}
+      {isInvited && (
+        <Card className='border-primary/30 bg-primary/5'>
+          <CardHeader className='pb-2'>
+            <CardTitle className='text-base'>邀请归因</CardTitle>
+          </CardHeader>
+          <CardContent className='flex flex-col gap-1 text-sm'>
+            <div className='flex justify-between'>
+              <span className='text-muted-foreground'>邀请人 TG ID</span>
+              <span className='font-mono text-xs'>{payload?.ref}</span>
+            </div>
+            <div className='flex justify-between'>
+              <span className='text-muted-foreground'>来源渠道</span>
+              <span>{payload?.ch ?? 'share'}</span>
+            </div>
+            <p className='text-xs text-muted-foreground mt-1'>
+              你通过好友邀请链接加入，归因已记录 ✓
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 邀请人模式：自己的邀请统计 */}
+      <Card>
+        <CardHeader className='pb-2'>
+          <CardTitle className='text-base'>我的邀请</CardTitle>
+        </CardHeader>
+        <CardContent className='flex gap-8'>
+          <div className='flex flex-col items-center'>
+            <span className='text-2xl font-bold'>{MOCK_STATS.inviteCount}</span>
+            <span className='text-xs text-muted-foreground'>成功邀请</span>
+          </div>
+          <div className='flex flex-col items-center'>
+            <span className='text-2xl font-bold'>{MOCK_STATS.totalPoints}</span>
+            <span className='text-xs text-muted-foreground'>获得积分</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 推广链接 */}
+      {referralLink && (
+        <Card>
+          <CardHeader className='pb-2'>
+            <CardTitle className='text-base'>我的推广链接</CardTitle>
+          </CardHeader>
+          <CardContent className='flex flex-col gap-3'>
+            <p className='text-xs text-muted-foreground break-all font-mono'>
+              {referralLink}
+            </p>
+            <Button className='w-full' onClick={handleShare}>
+              邀请朋友获积分
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* initData 调试信息 */}
+      <Card>
+        <CardHeader className='pb-2'>
+          <CardTitle className='text-base text-muted-foreground'>
+            initData（调试）
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <pre className='text-xs text-muted-foreground break-all whitespace-pre-wrap'>
+            {initData || '（无 initData，可能在非 TG 环境中运行）'}
+          </pre>
+        </CardContent>
+      </Card>
+
+      {/* 跳转tg sdk 文档 */}
+      <Card>
+        <CardHeader className='pb-2'>
+          <CardTitle
+            onClick={() => router.push('/tg-sdk-docs')}
+            className='text-base text-muted-foreground'
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            跳转 TG SDK 文档
+          </CardTitle>
+        </CardHeader>
+      </Card>
+    </main>
   );
 }

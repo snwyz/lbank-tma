@@ -1,3 +1,4 @@
+'use client';
 import type { WebApp } from '../types';
 import { useCallback } from 'react';
 import { useWebApp } from './useWebApp';

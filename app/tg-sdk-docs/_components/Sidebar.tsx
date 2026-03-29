@@ -21,10 +21,10 @@ export default function Sidebar() {
           {components.map((entry) => (
             <li key={entry.slug}>
               <Link
-                href={`/tg-docs/${entry.slug}`}
+                href={`/tg-sdk-docs/${entry.slug}`}
                 className={cn(
                   'block rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground',
-                  pathname === `/tg-docs/${entry.slug}` &&
+                  pathname === `/tg-sdk-docs/${entry.slug}` &&
                     'bg-accent font-medium text-accent-foreground',
                 )}
               >
@@ -42,10 +42,10 @@ export default function Sidebar() {
           {hooks.map((entry) => (
             <li key={entry.slug}>
               <Link
-                href={`/tg-docs/${entry.slug}`}
+                href={`/tg-sdk-docs/${entry.slug}`}
                 className={cn(
                   'block rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground',
-                  pathname === `/tg-docs/${entry.slug}` &&
+                  pathname === `/tg-sdk-docs/${entry.slug}` &&
                     'bg-accent font-medium text-accent-foreground',
                 )}
               >

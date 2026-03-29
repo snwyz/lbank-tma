@@ -9,8 +9,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { validRegistry } from './_data/registry';
 
-export const metadata = { title: 'TG SDK Docs' };
-
 export default function TgDocsPage() {
   const components = validRegistry.filter((e) => e.category === 'Component');
   const hooks = validRegistry.filter((e) => e.category === 'Hook');
@@ -31,7 +29,7 @@ export default function TgDocsPage() {
           {components.map((entry) => (
             <Link
               key={entry.slug}
-              href={`/tg-docs/${entry.slug}`}
+              href={`/tg-sdk-docs/${entry.slug}`}
               className='block'
             >
               <Card className='h-full transition-shadow hover:shadow-md'>
@@ -54,7 +52,7 @@ export default function TgDocsPage() {
           {hooks.map((entry) => (
             <Link
               key={entry.slug}
-              href={`/tg-docs/${entry.slug}`}
+              href={`/tg-sdk-docs/${entry.slug}`}
               className='block'
             >
               <Card className='h-full transition-shadow hover:shadow-md'>
