@@ -39,6 +39,10 @@ export default function Page() {
       })
     : null;
 
+  console.log('initData:', initData);
+  console.log('startParam payload:', payload);
+  console.log('referralLink:', referralLink);
+
   const isInvited = Boolean(payload?.ref);
 
   function handleShare() {
