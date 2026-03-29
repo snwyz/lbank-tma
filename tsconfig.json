@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@lbank/tma-sdk": ["./packages/tma-sdk/src/index.ts"]
     }
   },
   "include": [

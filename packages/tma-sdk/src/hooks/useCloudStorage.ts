@@ -1,0 +1,75 @@
+import { useCallback } from 'react';
+import { useWebApp } from './useWebApp';
+
+const useCloudStorage = () => {
+  const cloudStorage = useWebApp()?.CloudStorage;
+
+  const getItem = useCallback(
+    (key: string) =>
+      new Promise<string | undefined>((resolve, reject) => {
+        cloudStorage?.getItem(key, (error, value) => {
+          if (!error) resolve(value);
+          else reject(error);
+        });
+      }),
+    [cloudStorage],
+  );
+
+  const setItem = useCallback(
+    (key: string, value: string) =>
+      new Promise<void>((resolve, reject) => {
+        cloudStorage?.setItem(key, value, (error, state) => {
+          if (!error && state) resolve();
+          else reject(error);
+        });
+      }),
+    [cloudStorage],
+  );
+
+  const getItems = useCallback(
+    (keys: string[]) =>
+      new Promise<Record<string, string>>((resolve, reject) => {
+        cloudStorage?.getItems(keys, (error, value) => {
+          if (!error && value) resolve(value);
+          else reject(error);
+        });
+      }),
+    [cloudStorage],
+  );
+
+  const removeItem = useCallback(
+    (key: string) =>
+      new Promise<void>((resolve, reject) => {
+        cloudStorage?.removeItem(key, (error, state) => {
+          if (!error && state) resolve();
+          else reject(error);
+        });
+      }),
+    [cloudStorage],
+  );
+
+  const removeItems = useCallback(
+    (keys: string[]) =>
+      new Promise<void>((resolve, reject) => {
+        cloudStorage?.removeItems(keys, (error, state) => {
+          if (!error && state) resolve();
+          else reject(error);
+        });
+      }),
+    [cloudStorage],
+  );
+
+  const getKeys = useCallback(
+    () =>
+      new Promise<string[]>((resolve, reject) => {
+        cloudStorage?.getKeys((error, state) => {
+          if (!error && state) resolve(state);
+          else reject(error);
+        });
+      }),
+    [cloudStorage],
+  );
+
+  return { getItem, setItem, getItems, removeItem, removeItems, getKeys };
+};
+export default useCloudStorage;

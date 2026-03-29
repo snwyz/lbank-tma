@@ -1,0 +1,11 @@
+{
+  "name": "@lbank/tma-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "telegramSdkApiVersion": "9.5",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
