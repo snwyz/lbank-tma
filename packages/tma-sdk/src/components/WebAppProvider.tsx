@@ -15,6 +15,7 @@ const WebAppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         const { injectMockIfNeeded } = await import('../mock');
         injectMockIfNeeded();
       }
+      console.log('Initializing WebApp context...', getWebApp());
       setTwa(getWebApp());
     };
     init();

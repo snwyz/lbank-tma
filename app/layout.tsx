@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
@@ -21,6 +22,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    import('vconsole').then(({ default: VConsole }) => {
+      new VConsole();
+    });
+  }, []);
+
   return (
     <html
       lang='en'
